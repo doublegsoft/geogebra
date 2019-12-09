@@ -137,8 +137,8 @@ public class SymbolicEditorW implements SymbolicEditor, MathFieldListener,
 		String editedText = editor.getText();
 		if (!editedText.trim().equals(text)) {
 			geoInputBox.updateLinkedGeo(editedText);
+			app.getKernel().storeUndoInfo();
 		}
-		app.getKernel().storeUndoInfo();
 	}
 
 	private void setTempUserDisplayInput() {
