@@ -4,6 +4,7 @@ import org.geogebra.common.GeoGebraConstants;
 import org.geogebra.common.main.Feature;
 import org.geogebra.common.move.events.BaseEvent;
 import org.geogebra.common.move.ggtapi.models.GeoGebraTubeUser;
+import org.geogebra.common.move.ggtapi.models.MarvlAPI;
 import org.geogebra.common.move.ggtapi.models.MowBAPI;
 import org.geogebra.common.move.ggtapi.operations.BackendAPI;
 import org.geogebra.common.move.ggtapi.operations.LogInOperation;
@@ -95,20 +96,38 @@ public class LoginOperationW extends LogInOperation {
 
 	@Override
 	public BackendAPI getGeoGebraTubeAPI() {
-		if (this.api == null) {
-			if (!StringUtil
-					.empty(app.getArticleElement().getParamBackendURL())) {
-				this.api = new MowBAPI(
-						app.getArticleElement().getParamBackendURL(),
-						new MarvlURLChecker());
+		if (api == null) {
+			if (hasBackendURL()) {
+				api = newMowBAPI();
 			} else {
-				this.api = new GeoGebraTubeAPIW(app.getClientInfo(),
-						app.has(Feature.TUBE_BETA), app.getArticleElement());
+				api = app.isWhiteboardActive()
+						? newMarvlAPI()
+						: newGeoGebraTubeAPI();
 			}
 		} else {
 			api.setClient(app.getClientInfo());
 		}
 		return this.api;
+	}
+
+	private boolean hasBackendURL() {
+		return !StringUtil
+				.empty(app.getArticleElement().getParamBackendURL());
+	}
+
+	private BackendAPI newMowBAPI() {
+		return new MowBAPI(
+				app.getArticleElement().getParamBackendURL(),
+				new MarvlURLChecker());
+	}
+
+	private BackendAPI newMarvlAPI() {
+		return new MarvlAPI(new MarvlURLChecker());
+	}
+
+	private BackendAPI newGeoGebraTubeAPI() {
+		return new GeoGebraTubeAPIW(app.getClientInfo(),
+				app.has(Feature.TUBE_BETA), app.getArticleElement());
 	}
 
 	@Override

@@ -10,153 +10,135 @@ import org.geogebra.common.move.ggtapi.requests.SyncCallback;
 import org.geogebra.common.util.AsyncOperation;
 
 public class MarvlAPI implements BackendAPI {
-	@Override
+
+	private static final String MARVL_URL = "https://api.geogebra.org/v1.0";
+	private final MaterialRestApi materialRestApi;
+
+	public MarvlAPI(URLChecker urlChecker) {
+		materialRestApi = new MaterialRestApi(MARVL_URL, urlChecker) ;
+	}
+
 	public void getItem(String id, MaterialCallbackI callback) {
-
+		materialRestApi.getItem(id, callback);
 	}
 
-	@Override
 	public boolean checkAvailable(LogInOperation logInOperation) {
-		return false;
+		return materialRestApi.checkAvailable(logInOperation);
 	}
 
-	@Override
 	public String getLoginUrl() {
-		return null;
+		return materialRestApi.getLoginUrl();
 	}
 
-	@Override
-	public boolean parseUserDataFromResponse(GeoGebraTubeUser user, String loadLastUser) {
-		return false;
+	public boolean parseUserDataFromResponse(GeoGebraTubeUser guser, String response) {
+		return materialRestApi.parseUserDataFromResponse(guser, response);
 	}
 
-	@Override
-	public void deleteMaterial(Material mat, MaterialCallbackI cb) {
-
+	public void deleteMaterial(final Material mat, final MaterialCallbackI callback) {
+		materialRestApi.deleteMaterial(mat, callback);
 	}
 
-	@Override
-	public void authorizeUser(GeoGebraTubeUser user, LogInOperation logInOperation, boolean automatic) {
-
+	public void authorizeUser(final GeoGebraTubeUser user, final LogInOperation op, final boolean automatic) {
+		materialRestApi.authorizeUser(user, op, automatic);
 	}
 
-	@Override
-	public void setClient(ClientInfo clientInfo) {
-
+	public void setClient(ClientInfo client) {
+		materialRestApi.setClient(client);
 	}
 
-	@Override
-	public void sync(long timestamp, SyncCallback syncCallback) {
-
+	public void sync(long i, SyncCallback syncCallback) {
+		materialRestApi.sync(i, syncCallback);
 	}
 
-	@Override
 	public boolean isCheckDone() {
-		return false;
+		return materialRestApi.isCheckDone();
 	}
 
-	@Override
-	public void setUserLanguage(String lang, String token) {
-
+	public void setUserLanguage(String fontStr, String loginToken) {
+		materialRestApi.setUserLanguage(fontStr, loginToken);
 	}
 
-	@Override
 	public void shareMaterial(Material material, String to, String message, MaterialCallbackI cb) {
-
+		materialRestApi.shareMaterial(material, to, message, cb);
 	}
 
-	@Override
 	public void favorite(int id, boolean favorite) {
-
+		materialRestApi.favorite(id, favorite);
 	}
 
-	@Override
 	public String getUrl() {
-		return null;
+		return materialRestApi.getUrl();
 	}
 
-	@Override
 	public void logout(String token) {
-
+		materialRestApi.logout(token);
 	}
 
-	@Override
 	public void uploadLocalMaterial(Material mat, MaterialCallbackI cb) {
-
+		materialRestApi.uploadLocalMaterial(mat, cb);
 	}
 
-	@Override
-	public boolean performCookieLogin(LogInOperation op) {
-		return false;
+	public boolean performCookieLogin(final LogInOperation op) {
+		return materialRestApi.performCookieLogin(op);
 	}
 
-	@Override
-	public void performTokenLogin(LogInOperation logInOperation, String token) {
-
+	public void performTokenLogin(LogInOperation op, String token) {
+		materialRestApi.performTokenLogin(op, token);
 	}
 
-	@Override
-	public void getUsersMaterials(MaterialCallbackI cb, MaterialRequest.Order order) {
-
+	public void getUsersMaterials(MaterialCallbackI userMaterialsCB, MaterialRequest.Order order) {
+		materialRestApi.getUsersMaterials(userMaterialsCB, order);
 	}
 
-	@Override
-	public void getFeaturedMaterials(MaterialCallbackI callback) {
-
+	public void getFeaturedMaterials(MaterialCallbackI userMaterialsCB) {
+		materialRestApi.getFeaturedMaterials(userMaterialsCB);
 	}
 
-	@Override
-	public void getUsersOwnMaterials(MaterialCallbackI cb, MaterialRequest.Order order) {
-
+	public void getUsersOwnMaterials(final MaterialCallbackI userMaterialsCB, MaterialRequest.Order order) {
+		materialRestApi.getUsersOwnMaterials(userMaterialsCB, order);
 	}
 
-	@Override
-	public void getSharedMaterials(MaterialCallbackI cb, MaterialRequest.Order order) {
-
+	public void getSharedMaterials(final MaterialCallbackI sharedMaterialsCB, MaterialRequest.Order order) {
+		materialRestApi.getSharedMaterials(sharedMaterialsCB, order);
 	}
 
-	@Override
-	public void uploadMaterial(String tubeID, String visibility, String filename, String base64, MaterialCallbackI cb, Material.MaterialType type) {
-
+	public void uploadMaterial(String tubeID, String visibility, String text, String base64, MaterialCallbackI materialCallback, Material.MaterialType type) {
+		materialRestApi.uploadMaterial(tubeID, visibility, text, base64, materialCallback, type);
 	}
 
-	@Override
-	public void uploadRenameMaterial(Material material, MaterialCallbackI callback) {
-
+	public void uploadRenameMaterial(Material material, MaterialCallbackI materialCallback) {
+		materialRestApi.uploadRenameMaterial(material, materialCallback);
 	}
 
-	@Override
-	public void copy(Material material, String title, MaterialCallbackI materialCallback) {
-
+	public void copy(Material material, final String title, final MaterialCallbackI materialCallback) {
+		materialRestApi.copy(material, title, materialCallback);
 	}
 
-	@Override
-	public void setShared(Material material, String groupID, boolean shared, AsyncOperation<Boolean> callback) {
-
+	public void setBasicAuth(String base64) {
+		materialRestApi.setBasicAuth(base64);
 	}
 
-	@Override
-	public void getGroups(String materialID, AsyncOperation<List<String>> asyncOperation) {
-
+	public void setShared(Material m, String groupID, boolean shared, final AsyncOperation<Boolean> callback) {
+		materialRestApi.setShared(m, groupID, shared, callback);
 	}
 
-	@Override
+	public void getGroups(String materialID, final AsyncOperation<List<String>> callback) {
+		materialRestApi.getGroups(materialID, callback);
+	}
+
 	public boolean owns(Material mat) {
-		return false;
+		return materialRestApi.owns(mat);
 	}
 
-	@Override
 	public boolean canUserShare(boolean student) {
-		return false;
+		return materialRestApi.canUserShare(student);
 	}
 
-	@Override
 	public boolean anonymousOpen() {
-		return false;
+		return materialRestApi.anonymousOpen();
 	}
 
-	@Override
 	public URLChecker getURLChecker() {
-		return null;
+		return materialRestApi.getURLChecker();
 	}
 }
