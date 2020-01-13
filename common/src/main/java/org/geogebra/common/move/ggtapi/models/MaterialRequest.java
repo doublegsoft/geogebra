@@ -29,13 +29,13 @@ public class MaterialRequest implements Request {
 
 		cas, graphics2, constprot, propcalc, dataanalysis, funcinsp, macro, sharing_key,
 
-		preview_url, elemcnt_applet;
+		preview_url, elemcnt_applet, appname;
 	}
 
 	public enum Filters {
 		id, title, search, type, description, timestamp, author, author_url, language, featured,
 
-		likes, inbook, inws, author_id;
+		likes, inbook, inws, author_id, appname;
 	}
 
 	public enum Order {
@@ -219,8 +219,9 @@ public class MaterialRequest implements Request {
 	 */
 	public static MaterialRequest forCurrentUser(ClientInfo client) {
 		MaterialRequest req = new MaterialRequest(client);
-		req.filters = new Filters[] { Filters.type };
+		req.filters = new Filters[] { Filters.type, Filters.appname };
 		req.filterMap.put(Filters.type, "link");
+		req.filterMap.put(Filters.appname, "notes");
 		req.negFilters.add(Filters.type);
 		req.by = Order.relevance;
 		return req;
