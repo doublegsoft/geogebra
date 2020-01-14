@@ -12,6 +12,7 @@ import org.geogebra.common.util.AsyncOperation;
 public class MarvlAPI implements BackendAPI {
 
 	private static final String MARVL_URL = "https://api.geogebra.org/v1.0";
+	private static final String MARVL_LOGIN_URL = MARVL_URL;
 	private final MaterialRestApi materialRestApi;
 
 	public MarvlAPI(URLChecker urlChecker) {
@@ -27,7 +28,7 @@ public class MarvlAPI implements BackendAPI {
 	}
 
 	public String getLoginUrl() {
-		return materialRestApi.getLoginUrl();
+		return MARVL_LOGIN_URL;
 	}
 
 	public boolean parseUserDataFromResponse(GeoGebraTubeUser guser, String response) {
@@ -67,7 +68,7 @@ public class MarvlAPI implements BackendAPI {
 	}
 
 	public String getUrl() {
-		return materialRestApi.getUrl();
+		return MARVL_URL;
 	}
 
 	public void logout(String token) {

@@ -116,6 +116,11 @@ public class LoginOperationW extends LogInOperation {
 		if (!StringUtil.empty(app.getArticleElement().getParamLoginURL())) {
 			return app.getArticleElement().getParamLoginURL();
 		}
+
+		if (app.isWhiteboardActive()) {
+			return getGeoGebraTubeAPI().getLoginUrl();
+		}
+
 		return super.getLoginURL(languageCode);
 	}
 
