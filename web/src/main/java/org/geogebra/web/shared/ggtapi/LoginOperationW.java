@@ -1,11 +1,8 @@
 package org.geogebra.web.shared.ggtapi;
 
 import org.geogebra.common.GeoGebraConstants;
-import org.geogebra.common.main.Feature;
 import org.geogebra.common.move.events.BaseEvent;
 import org.geogebra.common.move.ggtapi.models.GeoGebraTubeUser;
-import org.geogebra.common.move.ggtapi.models.MarvlAPI;
-import org.geogebra.common.move.ggtapi.models.MowBAPI;
 import org.geogebra.common.move.ggtapi.operations.BackendAPI;
 import org.geogebra.common.move.ggtapi.operations.LogInOperation;
 import org.geogebra.common.move.views.BaseEventView;
@@ -15,7 +12,6 @@ import org.geogebra.common.util.debug.Log;
 import org.geogebra.web.html5.main.AppW;
 import org.geogebra.web.html5.util.URLEncoderW;
 import org.geogebra.web.shared.ggtapi.models.AuthenticationModelW;
-import org.geogebra.web.shared.ggtapi.models.GeoGebraTubeAPIW;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Frame;
@@ -29,7 +25,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class LoginOperationW extends LogInOperation {
 	private AppW app;
-	private BackendAPI api;
+	private BackendAPIFactory apiFactory;
 
 	private class EventViewW extends BaseEventView {
 		@Override
@@ -57,6 +53,7 @@ public class LoginOperationW extends LogInOperation {
 		setModel(new AuthenticationModelW(appWeb));
 
 		iniNativeEvents();
+		apiFactory = new BackendAPIFactory(app);
 	}
 
 	/**
@@ -96,38 +93,10 @@ public class LoginOperationW extends LogInOperation {
 
 	@Override
 	public BackendAPI getGeoGebraTubeAPI() {
-		if (api == null) {
-			if (hasBackendURL()) {
-				api = newMowBAPI();
-			} else {
-				api = app.isWhiteboardActive()
-						? newMarvlAPI()
-						: newGeoGebraTubeAPI();
-			}
-		} else {
-			api.setClient(app.getClientInfo());
+		if (apiFactory == null) {
+			apiFactory = new BackendAPIFactory(app);
 		}
-		return this.api;
-	}
-
-	private boolean hasBackendURL() {
-		return !StringUtil
-				.empty(app.getArticleElement().getParamBackendURL());
-	}
-
-	private BackendAPI newMowBAPI() {
-		return new MowBAPI(
-				app.getArticleElement().getParamBackendURL(),
-				new MarvlURLChecker());
-	}
-
-	private BackendAPI newMarvlAPI() {
-		return new MarvlAPI(new MarvlURLChecker());
-	}
-
-	private BackendAPI newGeoGebraTubeAPI() {
-		return new GeoGebraTubeAPIW(app.getClientInfo(),
-				app.has(Feature.TUBE_BETA), app.getArticleElement());
+		return apiFactory.get();
 	}
 
 	@Override
