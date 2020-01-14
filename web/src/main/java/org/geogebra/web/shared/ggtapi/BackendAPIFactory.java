@@ -5,7 +5,6 @@ import org.geogebra.common.move.ggtapi.models.MarvlAPI;
 import org.geogebra.common.move.ggtapi.models.MowBAPI;
 import org.geogebra.common.move.ggtapi.operations.BackendAPI;
 import org.geogebra.common.util.StringUtil;
-import org.geogebra.common.util.debug.Log;
 import org.geogebra.web.html5.main.AppW;
 import org.geogebra.web.html5.util.ArticleElementInterface;
 import org.geogebra.web.shared.ggtapi.models.GeoGebraTubeAPIW;
@@ -44,7 +43,6 @@ public class BackendAPIFactory {
 	}
 
 	private BackendAPI newMarvlAPI() {
-		Log.debug("marvlapi!!!!!!!!!!!!!");
 		return new MarvlAPI(new MarvlURLChecker());
 	}
 
