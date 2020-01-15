@@ -362,6 +362,12 @@ public abstract class GeoGebraTubeAPI implements BackendAPI {
 				cb);
 	}
 
+	public void getUsersMaterialsGgs(MaterialCallbackI cb, Order order) {
+		performRequest(
+				MaterialRequest.forCurrentUserGgs(client).toJSONString(client),
+				cb);
+	}
+
 	@Override
 	public void getUsersOwnMaterials(MaterialCallbackI cb, Order order) {
 		performRequest(
@@ -487,6 +493,11 @@ public abstract class GeoGebraTubeAPI implements BackendAPI {
 	@Override
 	public void getFeaturedMaterials(MaterialCallbackI callback) {
 		performRequest(MaterialRequest.forFeatured(client).toJSONString(client),
+				callback);
+	}
+
+	public void getFeaturedNotesMaterials(MaterialCallbackI callback) {
+		performRequest(MaterialRequest.forFeaturedGgs(client).toJSONString(client),
 				callback);
 	}
 

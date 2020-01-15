@@ -8,19 +8,34 @@ import org.geogebra.common.util.StringUtil;
 import org.geogebra.web.html5.main.AppW;
 import org.geogebra.web.html5.util.ArticleElementInterface;
 import org.geogebra.web.shared.ggtapi.models.GeoGebraTubeAPIW;
+import org.geogebra.web.shared.ggtapi.models.NotesTubeApi;
 
+/**
+ * Class to provide the right backend API
+ * for the given application.
+ *
+ * @author laszlo
+ */
 public class BackendAPIFactory {
 	private AppW app;
 	private ArticleElementInterface articleElement;
 	private BackendAPI api = null;
 	private String backendURL;
 
+	/**
+	 *
+	 * @param app The appication.
+	 */
 	BackendAPIFactory(AppW app) {
 		this.app = app;
 		articleElement = app.getArticleElement();
 		backendURL = articleElement.getParamBackendURL();
 	}
 
+	/**
+	 *
+	 * @return the backend API suitable for the applicaion.
+	 */
 	public BackendAPI get() {
 		if (api == null) {
 			api = hasBackendURL() ? newMowBAPI() : newGeoGebraAPI(); ;
@@ -31,7 +46,7 @@ public class BackendAPIFactory {
 	}
 
 	private BackendAPI newGeoGebraAPI() {
-		return app.isWhiteboardActive() ? newMarvlAPI(): newTubeAPI();
+		return app.isWhiteboardActive() ? newNotesAPI(): newTubeAPI();
 	}
 
 	private boolean hasBackendURL() {
@@ -46,7 +61,10 @@ public class BackendAPIFactory {
 		return new MarvlAPI(new MarvlURLChecker());
 	}
 
-	private BackendAPI newTubeAPI() {
+	private BackendAPI newNotesAPI() {
+		return new NotesTubeApi(newTubeAPI());
+	}
+	private GeoGebraTubeAPIW newTubeAPI() {
 		return new GeoGebraTubeAPIW(app.getClientInfo(),
 				app.has(Feature.TUBE_BETA),
 				articleElement);

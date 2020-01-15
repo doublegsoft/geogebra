@@ -219,10 +219,24 @@ public class MaterialRequest implements Request {
 	 */
 	public static MaterialRequest forCurrentUser(ClientInfo client) {
 		MaterialRequest req = new MaterialRequest(client);
-		req.filters = new Filters[] { Filters.type, Filters.appname };
+		req.filters = new Filters[] { Filters.type };
 		req.filterMap.put(Filters.type, "link");
-		req.filterMap.put(Filters.appname, "notes");
 		req.negFilters.add(Filters.type);
+		req.by = Order.relevance;
+		return req;
+	}
+
+	/**
+	 * Gets personalized selection of materials (own, favorite, featured).
+	 *
+	 * @param client
+	 *            api client
+	 * @return request
+	 */
+	public static MaterialRequest forCurrentUserGgs(ClientInfo client) {
+		MaterialRequest req = new MaterialRequest(client);
+		req.filters = new Filters[] { Filters.appname };
+		req.filterMap.put(Filters.appname, "notes");
 		req.by = Order.relevance;
 		return req;
 	}
@@ -266,6 +280,20 @@ public class MaterialRequest implements Request {
 		MaterialRequest req = new MaterialRequest(client);
 		req.filters = new Filters[] { Filters.featured, Filters.type };
 		req.filterMap.put(Filters.type, "ggb");
+		req.filterMap.put(Filters.featured, "true");
+		req.type = Type.desc;
+		return req;
+	}
+
+	/**
+	 * @param client
+	 *            client info
+	 * @return request for featured materials, filter just ggs
+	 */
+	public static MaterialRequest forFeaturedGgs(ClientInfo client) {
+		MaterialRequest req = new MaterialRequest(client);
+		req.filters = new Filters[] { Filters.featured, Filters.type };
+		req.filterMap.put(Filters.type, "ggs");
 		req.filterMap.put(Filters.featured, "true");
 		req.type = Type.desc;
 		return req;
