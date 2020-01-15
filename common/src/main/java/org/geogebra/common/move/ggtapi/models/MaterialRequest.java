@@ -233,10 +233,11 @@ public class MaterialRequest implements Request {
 	 *            api client
 	 * @return request
 	 */
-	public static MaterialRequest forCurrentUserGgs(ClientInfo client) {
+	public static MaterialRequest forCurrentUserGgs(ClientInfo client, String id) {
 		MaterialRequest req = new MaterialRequest(client);
-		req.filters = new Filters[] { Filters.appname };
+		req.filters = new Filters[] { Filters.author_id, Filters.appname };
 		req.filterMap.put(Filters.appname, "notes");
+		req.filterMap.put(Filters.author_id, id);
 		req.by = Order.relevance;
 		return req;
 	}
