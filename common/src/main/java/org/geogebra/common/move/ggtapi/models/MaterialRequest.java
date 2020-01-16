@@ -233,7 +233,7 @@ public class MaterialRequest implements Request {
 	 *            api client
 	 * @return request
 	 */
-	public static MaterialRequest forCurrentUserGgs(ClientInfo client, String id) {
+	public static MaterialRequest forCurrentUserNotes(ClientInfo client, String id) {
 		MaterialRequest req = new MaterialRequest(client);
 		req.filters = new Filters[] { Filters.author_id, Filters.appname };
 		req.filterMap.put(Filters.appname, "notes");

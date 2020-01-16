@@ -49,7 +49,7 @@ public class BackendAPIFactory {
 	}
 
 	private BackendAPI newGeoGebraAPI() {
-		return app.isWhiteboardActive() ? newNotesAPI(): newTubeAPI();
+		return app.isWhiteboardActive() ? newNotesAPI() : newTubeAPI();
 	}
 
 	private boolean hasBackendURL() {

@@ -33,7 +33,6 @@ public abstract class MaterialFilter {
 		};
 	}
 
-
 	/**
 	 * searches for "query" in: title and description of material
 	 * 
