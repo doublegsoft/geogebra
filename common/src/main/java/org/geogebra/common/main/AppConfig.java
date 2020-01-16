@@ -230,11 +230,4 @@ public interface AppConfig {
      * @return whether the apps uses restricted dragging for certain objects or not
      */
     boolean isObjectDraggingRestricted();
-
-    /**
-     * Filter to open app-specific materials only
-     *
-     * @return the default filter used for opening materials.
-     */
-	String getMaterialFilter();
 }

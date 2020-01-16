@@ -54,9 +54,4 @@ public class AppConfigNotes extends AppConfigDefault {
 	public boolean shouldHideEquations() {
 		return false;
 	}
-
-	@Override
-	public String getMaterialFilter() {
-		return "&filter=notes";
-	}
 }

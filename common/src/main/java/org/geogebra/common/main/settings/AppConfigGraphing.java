@@ -278,9 +278,4 @@ public class AppConfigGraphing implements AppConfig {
 	public boolean shouldHideEquations() {
 		return true;
 	}
-
-	@Override
-	public String getMaterialFilter() {
-		return "";
-	}
 }

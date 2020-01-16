@@ -278,9 +278,4 @@ public class AppConfigGeometry implements AppConfig {
 	public boolean shouldHideEquations() {
 		return false;
 	}
-
-	@Override
-	public String getMaterialFilter() {
-		return "";
-	}
 }
