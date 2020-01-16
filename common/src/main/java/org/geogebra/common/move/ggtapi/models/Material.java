@@ -267,6 +267,10 @@ public class Material implements Comparable<Material>, Serializable {
 		this.appName = appName;
 	}
 
+	public String getAppName() {
+		return appName;
+	}
+
 	public void setType(MaterialType type) {
 		this.type = type;
 	}

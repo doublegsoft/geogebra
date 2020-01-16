@@ -1,7 +1,6 @@
 package org.geogebra.web.shared.ggtapi;
 
 import org.geogebra.common.main.Feature;
-import org.geogebra.common.move.ggtapi.models.MarvlAPI;
 import org.geogebra.common.move.ggtapi.models.MowBAPI;
 import org.geogebra.common.move.ggtapi.operations.BackendAPI;
 import org.geogebra.common.util.StringUtil;
@@ -37,12 +36,16 @@ public class BackendAPIFactory {
 	 * @return the backend API suitable for the applicaion.
 	 */
 	public BackendAPI get() {
-		if (api == null) {
-			api = hasBackendURL() ? newMowBAPI() : newGeoGebraAPI(); ;
-		}
-
+		createApiIfNeeded();
 		api.setClient(app.getClientInfo());
 		return this.api;
+	}
+
+	private void createApiIfNeeded() {
+		if (api != null) {
+			return;
+		}
+		api = hasBackendURL() ? newMowBAPI() : newGeoGebraAPI();
 	}
 
 	private BackendAPI newGeoGebraAPI() {
@@ -57,13 +60,10 @@ public class BackendAPIFactory {
 		return new MowBAPI(backendURL, new MarvlURLChecker());
 	}
 
-	private BackendAPI newMarvlAPI() {
-		return new MarvlAPI(new MarvlURLChecker());
-	}
-
 	private BackendAPI newNotesAPI() {
 		return new NotesTubeApi(newTubeAPI());
 	}
+
 	private GeoGebraTubeAPIW newTubeAPI() {
 		return new GeoGebraTubeAPIW(app.getClientInfo(),
 				app.has(Feature.TUBE_BETA),
