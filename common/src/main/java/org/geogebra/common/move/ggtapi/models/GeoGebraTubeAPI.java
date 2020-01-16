@@ -362,19 +362,6 @@ public abstract class GeoGebraTubeAPI implements BackendAPI {
 				cb);
 	}
 
-	/**
-	 * Gets user materials for Notes.
-	 *
-	 * @param callback
-	 *            {@link MaterialCallbackI}
-	 */
-	public void getUsersMaterialsForNotes(MaterialCallbackI callback) {
-		performRequest(
-				MaterialRequest.forCurrentUserNotes(client, client.getModel().getUserId() + "")
-						.toJSONString(client),
-				callback);
-	}
-
 	@Override
 	public void getUsersOwnMaterials(MaterialCallbackI cb, Order order) {
 		performRequest(

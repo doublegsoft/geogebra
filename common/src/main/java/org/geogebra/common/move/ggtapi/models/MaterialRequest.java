@@ -218,27 +218,30 @@ public class MaterialRequest implements Request {
 	 * @return request
 	 */
 	public static MaterialRequest forCurrentUser(ClientInfo client) {
-		MaterialRequest req = new MaterialRequest(client);
-		req.filters = new Filters[] { Filters.type };
-		req.filterMap.put(Filters.type, "link");
-		req.negFilters.add(Filters.type);
+		MaterialRequest req = isNotesApp(client.getAppName())
+				? createNotesRequestForUser(client)
+				: createTypeReqestForUser(client);
 		req.by = Order.relevance;
 		return req;
 	}
 
-	/**
-	 * Gets personalized selection of materials (own, favorite, featured).
-	 *
-	 * @param client
-	 *            api client
-	 * @return request
-	 */
-	public static MaterialRequest forCurrentUserNotes(ClientInfo client, String id) {
+	private static boolean isNotesApp(String appName) {
+		return "notes".equals(appName.toLowerCase());
+	}
+
+	private static MaterialRequest createNotesRequestForUser(ClientInfo client) {
 		MaterialRequest req = new MaterialRequest(client);
-		req.filters = new Filters[] { Filters.author_id, Filters.appname };
+		req.filters = new Filters[] { Filters.appname, Filters.author_id };
 		req.filterMap.put(Filters.appname, "notes");
-		req.filterMap.put(Filters.author_id, id);
-		req.by = Order.relevance;
+		req.filterMap.put(Filters.author_id, client.getModel().getUserId() + "");
+		return req;
+	}
+
+	private static MaterialRequest createTypeReqestForUser(ClientInfo client) {
+		MaterialRequest req = new MaterialRequest(client);
+		req.filters = new Filters[]{Filters.type};
+		req.filterMap.put(Filters.type, "link");
+		req.negFilters.add(Filters.type);
 		return req;
 	}
 

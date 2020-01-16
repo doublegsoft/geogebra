@@ -7,7 +7,6 @@ import org.geogebra.common.util.StringUtil;
 import org.geogebra.web.html5.main.AppW;
 import org.geogebra.web.html5.util.ArticleElementInterface;
 import org.geogebra.web.shared.ggtapi.models.GeoGebraTubeAPIW;
-import org.geogebra.web.shared.ggtapi.models.NotesTubeApi;
 
 /**
  * Class to provide the right backend API
@@ -45,11 +44,7 @@ public class BackendAPIFactory {
 		if (api != null) {
 			return;
 		}
-		api = hasBackendURL() ? newMowBAPI() : newGeoGebraAPI();
-	}
-
-	private BackendAPI newGeoGebraAPI() {
-		return app.isWhiteboardActive() ? newNotesAPI() : newTubeAPI();
+		api = hasBackendURL() ? newMowBAPI() : newTubeAPI();
 	}
 
 	private boolean hasBackendURL() {
@@ -58,10 +53,6 @@ public class BackendAPIFactory {
 
 	private BackendAPI newMowBAPI() {
 		return new MowBAPI(backendURL, new MarvlURLChecker());
-	}
-
-	private BackendAPI newNotesAPI() {
-		return new NotesTubeApi(newTubeAPI());
 	}
 
 	private GeoGebraTubeAPIW newTubeAPI() {
