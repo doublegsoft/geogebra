@@ -219,7 +219,7 @@ public class MaterialRequest implements Request {
 	 */
 	public static MaterialRequest forCurrentUser(ClientInfo client) {
 		MaterialRequest req = isNotesApp(client.getAppName())
-				? createNotesRequestForUser(client)
+				? createNotesRequest(client)
 				: createTypeReqestForUser(client);
 		req.by = Order.relevance;
 		return req;
@@ -229,7 +229,7 @@ public class MaterialRequest implements Request {
 		return "notes".equals(appName.toLowerCase());
 	}
 
-	private static MaterialRequest createNotesRequestForUser(ClientInfo client) {
+	private static MaterialRequest createNotesRequest(ClientInfo client) {
 		MaterialRequest req = new MaterialRequest(client);
 		req.filters = new Filters[] { Filters.appname, Filters.author_id };
 		req.filterMap.put(Filters.appname, "notes");
@@ -266,12 +266,19 @@ public class MaterialRequest implements Request {
 	 * @return request for featured materials
 	 */
 	public static MaterialRequest forFeatured(ClientInfo client) {
+		MaterialRequest req = isNotesApp(client.getAppName())
+				? createNotesRequest(client)
+				: createFeaturedRequest(client);
+		req.filterMap.put(Filters.featured, "true");
+		req.type = Type.desc;
+		return req;
+	}
+
+	private static MaterialRequest createFeaturedRequest(ClientInfo client) {
 		MaterialRequest req = new MaterialRequest(client);
 		req.filters = new Filters[] { Filters.featured, Filters.type };
 		req.filterMap.put(Filters.type, "link");
 		req.negFilters.add(Filters.type);
-		req.filterMap.put(Filters.featured, "true");
-		req.type = Type.desc;
 		return req;
 	}
 
