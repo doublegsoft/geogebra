@@ -99,15 +99,58 @@ public class MaterialRequest implements Request {
 	public MaterialRequest(String query, ClientInfo client) {
 		this(client);
 		this.filterMap.put(Filters.type, "ggb");
-		if (query != null && query.startsWith("#")) {
-			this.filters = new Filters[] { Filters.id };
-			this.filterMap.put(Filters.id, query.substring(1));
-			this.by = Order.timestamp;
+		if (isSearchForId(query)) {
+			searchById(client, query);
 		} else {
-			this.filters = new Filters[] { Filters.search };
-			this.filterMap.put(Filters.search, query);
+			searchByTerm(client, query);
 		}
 	}
+
+	private void searchById(ClientInfo client, String query) {
+		String id = query.substring(1);
+		if (isNotesApp(client.getAppName())) {
+			searchNotesById(id);
+		} else {
+			searchDefaultById(id);
+		}
+		this.by = Order.timestamp;
+	}
+
+	private void searchNotesById(String id) {
+		filters = new Filters[] {Filters.id, Filters.appname, Filters.author_id };
+		filterMap.put(Filters.id, id);
+		filterMap.put(Filters.appname, "notes");
+		filterMap.put(Filters.author_id, client.getModel().getUserId() + "");
+	}
+
+	private void searchDefaultById(String id) {
+		this.filters = new Filters[] { Filters.id };
+		this.filterMap.put(Filters.id, id);
+	}
+
+	private void searchByTerm(ClientInfo client, String query) {
+		if (isNotesApp(client.getAppName())) {
+			searchNodesByTerm(client, query);
+		} else {
+			searchDefaultByTerm(query);
+		}
+	}
+
+	private void searchDefaultByTerm(String query) {
+		filters = new Filters[] { Filters.search };
+		filterMap.put(Filters.search, query);
+	}
+
+	private void searchNodesByTerm(ClientInfo client, String query) {
+		filters = new Filters[] {Filters.search, Filters.appname };
+		filterMap.put(Filters.search, query);
+		filterMap.put(Filters.appname, "notes");
+	}
+
+	private boolean isSearchForId(String query) {
+		return query != null && query.startsWith("#");
+	}
+
 
 	/**
 	 * Constructor for a Request by ID
