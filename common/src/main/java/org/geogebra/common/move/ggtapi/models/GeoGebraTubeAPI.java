@@ -489,17 +489,6 @@ public abstract class GeoGebraTubeAPI implements BackendAPI {
 				callback);
 	}
 
-	/**
-	 * Gets the featured materials for Notes.
-	 *
-	 *@param callback
-	 *           {@link MaterialCallbackI}
-	 */
-	public void getFeaturedNotesMaterials(MaterialCallbackI callback) {
-		performRequest(MaterialRequest.forFeaturedGgs(client).toJSONString(client),
-				callback);
-	}
-
 	// /**
 	// * Returns a String-Array of popular tags fetched from the GGT API
 	// *
