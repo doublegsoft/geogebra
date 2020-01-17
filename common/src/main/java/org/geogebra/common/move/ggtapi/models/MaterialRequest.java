@@ -130,7 +130,7 @@ public class MaterialRequest implements Request {
 
 	private void searchByTerm(ClientInfo client, String query) {
 		if (isNotesApp(client.getAppName())) {
-			searchNodesByTerm(client, query);
+			searchNodesByTerm(query);
 		} else {
 			searchDefaultByTerm(query);
 		}
@@ -141,7 +141,7 @@ public class MaterialRequest implements Request {
 		filterMap.put(Filters.search, query);
 	}
 
-	private void searchNodesByTerm(ClientInfo client, String query) {
+	private void searchNodesByTerm(String query) {
 		filters = new Filters[] {Filters.search, Filters.appname };
 		filterMap.put(Filters.search, query);
 		filterMap.put(Filters.appname, "notes");
